@@ -16,7 +16,6 @@ def get_piece_value(piece_abs: int):
     else:
         return TZARR_VALUE
 
-
 def calculate_value_of_color(color: Color, board_state: np.ndarray):
     value = 0
     

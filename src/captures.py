@@ -2,6 +2,7 @@ import numpy as np
 from moves import is_attackable, send_attacker_to
 import pieces
 from scoring import calculate_value_of_color
+import math
 
 def captures_from_position(arr, row, column, row_direction, column_direction, attacker = 0, capture_possibilities = []):
     
@@ -81,7 +82,7 @@ def add_value_to_captures(color: pieces.Color, captures: np.ndarray, board_state
     return valued_captures
   
     
-def find_best_moves(color: pieces.Color, board_state: np.ndarray, next_moves = []):
+def determine_capture_values(color: pieces.Color, board_state: np.ndarray):
     
     valued_captures = []
     
@@ -89,39 +90,75 @@ def find_best_moves(color: pieces.Color, board_state: np.ndarray, next_moves = [
         for j in range(0,9):
             piece = board_state[i][j]
             if pieces.is_color(color, piece):
-                if i == 4 and j == 4:
-                    print("yep")
-                print(piece)
                 captures = get_all_captures_by_space(board_state, i, j)
                 valued_capture = add_value_to_captures(color, captures, board_state, i, j)
                 valued_captures.extend(valued_capture) 
                 
-                
-    
     valued_captures = [item for item in valued_captures if item]
     check = valued_captures[0]
     valued_captures.sort(key=lambda x: x[0], reverse=True)
     
-    if len(valued_captures) < 3:
-        return valued_captures
+    return valued_captures
     
-    if next_moves == []:
-        next_moves = valued_captures[:3]
-    else:
-        return valued_captures
+def determine_average_evaluation(evaluation):
+    
+    if len(evaluation) == 0:
+        return 0
+    
+    average_evaluation = 0
+    number = len(evaluation)
+    
+    for i in range(0,number):
+        average_evaluation += evaluation[i][0]
         
-    for i in range(0,len(next_moves)):
+    return average_evaluation/number
+        
+    
+def merge_lookahead(row, column, evaluated_captures, enemy_moves):
+    for i in range(0,len(evaluated_captures)):
+        if evaluated_captures[i][1] == row and evaluated_captures[i][2] == column:
+            evaluated_captures[i][0] +- determine_average_evaluation(enemy_moves)
+        
+    evaluated_captures.sort(key=lambda x: x[0], reverse=True)
+    return evaluated_captures
+    
+def reduce_evaluation(evaluated_captures):
+        # with such few options there is no point to look ahead, our move is determined
+    if len(evaluated_captures) < 2:
+        return evaluated_captures
+    # there is really no point to evaluate poor positions so we take the top options, this reduces exponentially look-ahead complexity and runtime
+    number_to_consider = math.floor(len(evaluated_captures)/3) + 1
+    #number_to_consider = len(evaluated_captures)
+    
+    reduced_captures = evaluated_captures[:number_to_consider]
+    return reduced_captures
+    
+def find_best_moves(color: pieces.Color, board_state: np.ndarray, first_move = False, runs = 0):
+    
+    response = []
+    evaluated_captures = determine_capture_values(color, board_state)
+    reduced_evaluations = reduce_evaluation(evaluated_captures)
+
+    for i in range(0,len(reduced_evaluations)):
         positions = board_state.copy()
-        item = next_moves[i]
+        item = reduced_evaluations[i]
+        
         row = item[1]
         column = item[2]
+        starting_move = [row, column]
         
         row_move = item[3][0][0]
         row_column = item[3][0][1]
+        ending_move = [row_move, row_column]
         
         send_attacker_to(positions, row, column, row_move, row_column)
-        new_captures = find_best_moves(color, positions, next_moves)
-        print("ran")
+        new_evaluation = determine_capture_values(color, positions) if first_move is False else reduced_evaluations
         
-    
-    return valued_captures
+        # now we determine enemy moves
+        runs += 1
+        enemy_moves = find_best_moves(pieces.opposite_color(color), positions, False, runs) if runs < 5 else []
+        response.append([[starting_move], merge_lookahead(row_move, row_column, new_evaluation, enemy_moves)])
+
+    return response
+        
+   
