@@ -1,4 +1,4 @@
-import pieces
+from . import pieces
 
 def is_attackable(attacker: int, target: int) -> bool:
     if attacker < 0 and target > 0:

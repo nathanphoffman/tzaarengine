@@ -1,6 +1,6 @@
 import numpy as np
-from pieces import Color, Piece, is_color
-from scoringvars import GRAVITY_VALUE, TOTT_VALUE, TZARR_VALUE, TZARRA_VALUE
+from .pieces import Color, Piece, is_color
+from .scoringvars import GRAVITY_VALUE, TOTT_VALUE, TZARR_VALUE, TZARRA_VALUE
 
 def calculate_gravity(row: int, column: int) -> float:
     row_distance = abs(row-4)

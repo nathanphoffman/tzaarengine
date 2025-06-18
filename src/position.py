@@ -7,7 +7,7 @@ class Action(Enum):
 
 class Coordinates:
     
-    def __init__(self, row, column):
+    def __init__(self: Self, row: int, column: int) -> None:
         self.row = row
         self.column = column
     
@@ -16,7 +16,7 @@ class Coordinates:
 
 class Move:
     
-    def __init__(self, row, column):
+    def __init__(self: Self, row: int, column: int) -> None:
         self.at = Coordinates(row, column)
     
     at: Coordinates

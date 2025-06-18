@@ -1,7 +1,6 @@
-from typing import Union
-
+from typing import Any, Union
 import numpy as np
-import pieces
+from . import pieces
 
 def number_of_occurences(arr: np.ndarray, num: int) -> int:
     
@@ -13,8 +12,7 @@ def number_of_occurences(arr: np.ndarray, num: int) -> int:
     #             occurrences += 1
                
     #result = [(i, j) for i in range(3) for j in range(2)]
-    
-                
+       
     return occurrences
 
 def six_occurrences(arr: np.ndarray, piece: int) -> bool:
@@ -48,7 +46,8 @@ def setup_has_a_problem(arr: np.ndarray) -> Union[str, bool]:
         print(e)
         return True
 
-def get_starting_positions() -> np.array:
+# This is going to be rewritten soon to remove any
+def get_starting_positions() -> Any:
     standard_starting_positions = np.array([
         [*[pieces.VOID]*4, *[pieces.WHITE_TOTT]*4, pieces.BLACK_TOTT],
         [*[pieces.VOID]*3, pieces.BLACK_TOTT, *[pieces.WHITE_TZARRA]*3, pieces.BLACK_TZARRA, pieces.BLACK_TOTT],

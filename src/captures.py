@@ -1,8 +1,8 @@
 import numpy as np
-from moves import is_attackable, send_attacker_to
-import pieces
-from position import Coordinates, Move
-from scoring import calculate_value_of_color
+from .moves import is_attackable, send_attacker_to
+from . import pieces
+from .position import Coordinates, Move
+from .scoring import calculate_value_of_color
 import math
 
 def captures_from_position(arr, row, column, row_direction, column_direction, attacker = 0, capture_possibilities = []):

@@ -1,20 +1,19 @@
 import numpy as np
 import sys
 import os, sys
-# type: ignore
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
-from captures import find_best_moves
-from scoring import calculate_value_of_color
-from pieces import Color
-import pieces
-from setup import get_starting_positions
-from moves import send_attacker_to
 
-def print_board(arr: np.ndarray):
+import src.pieces as pieces
+from src.captures import find_best_moves
+from src.scoring import calculate_value_of_color
+from src.pieces import Color
+from src.setup import get_starting_positions
+from src.moves import send_attacker_to
+
+def print_board(arr: np.ndarray) -> None:
     for i in range(0, 9):
         print_line(arr[i])
     
-def print_line(arr: np.ndarray):
+def print_line(arr: np.ndarray) -> None:
     line: str = ""
     for i in range(0, 9):  # Loop from 0 to 8
         line += " "
