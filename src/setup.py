@@ -3,26 +3,27 @@ from typing import Union
 import numpy as np
 import pieces
 
-def number_of_occurences(arr: np.ndarray, num: int):
+def number_of_occurences(arr: np.ndarray, num: int) -> int:
     
-    occurrences : int = 0
-    
+    occurrences : int = sum(1 for i in range(9) for j in range(9) if arr[i][j] == num)
+
+    # for i in range(0,9):
+    #     for j in range(0,9):
+    #         if num == arr[i][j]:
+    #             occurrences += 1
+               
     #result = [(i, j) for i in range(3) for j in range(2)]
     
-    for i in range(0,9):
-        for j in range(0,9):
-            if num == arr[i][j]:
-                occurrences += 1
                 
     return occurrences
 
-def six_occurrences(arr: np.ndarray, piece: int):
+def six_occurrences(arr: np.ndarray, piece: int) -> bool:
     return number_of_occurences(arr, piece) == 6
 
-def nine_occurrences(arr: np.ndarray, piece: int):
+def nine_occurrences(arr: np.ndarray, piece: int) -> bool:
     return number_of_occurences(arr, piece) == 9
 
-def fifteen_occurrences(arr: np.ndarray, piece: int):
+def fifteen_occurrences(arr: np.ndarray, piece: int) -> bool:
     return number_of_occurences(arr, piece) == 15
 
 def setup_has_a_problem(arr: np.ndarray) -> Union[str, bool]:
@@ -47,7 +48,7 @@ def setup_has_a_problem(arr: np.ndarray) -> Union[str, bool]:
         print(e)
         return True
 
-def get_starting_positions():
+def get_starting_positions() -> np.array:
     standard_starting_positions = np.array([
         [*[pieces.VOID]*4, *[pieces.WHITE_TOTT]*4, pieces.BLACK_TOTT],
         [*[pieces.VOID]*3, pieces.BLACK_TOTT, *[pieces.WHITE_TZARRA]*3, pieces.BLACK_TZARRA, pieces.BLACK_TOTT],

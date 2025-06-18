@@ -1,11 +1,9 @@
 import numpy as np
 import sys
-
 import os, sys
-
 # type: ignore
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
-from captures import find_best_moves, get_all_captures_by_space
+from captures import find_best_moves
 from scoring import calculate_value_of_color
 from pieces import Color
 import pieces
@@ -40,8 +38,9 @@ def print_line(arr: np.ndarray):
     
 standard_starting_positions = get_starting_positions()
 
+hello : int = 2
 
-# send_attacker_to(standard_starting_positions, 3,4, 3,3) # white
+send_attacker_to(standard_starting_positions, 3,4, 3,3) # white
 # send_attacker_to(standard_starting_positions, 5,5, 5,6) # black
 # # send_attacker_to(standard_starting_positions, 6,5, 6,4) # black
 
