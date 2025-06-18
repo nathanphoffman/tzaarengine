@@ -6,12 +6,20 @@ class Action(Enum):
     STACK = 2
 
 class Coordinates:
+    
+    def __init__(self, row, column):
+        self.row = row
+        self.column = column
+    
     row: int
     column: int
 
 class Move:
+    
+    def __init__(self, row, column):
+        self.at = Coordinates(row, column)
+    
     at: Coordinates
-    move_to: Coordinates
     action: Action
     evaluation: int
     moves: list[Self]

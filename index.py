@@ -40,7 +40,7 @@ standard_starting_positions = get_starting_positions()
 
 hello : int = 2
 
-send_attacker_to(standard_starting_positions, 3,4, 3,3) # white
+# send_attacker_to(standard_starting_positions, 3,4, 3,3) # white
 # send_attacker_to(standard_starting_positions, 5,5, 5,6) # black
 # # send_attacker_to(standard_starting_positions, 6,5, 6,4) # black
 

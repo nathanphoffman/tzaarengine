@@ -1,6 +1,7 @@
 import numpy as np
 from moves import is_attackable, send_attacker_to
 import pieces
+from position import Coordinates, Move
 from scoring import calculate_value_of_color
 import math
 
@@ -109,7 +110,7 @@ def determine_average_evaluation(evaluation):
     number = len(evaluation)
     
     for i in range(0,number):
-        average_evaluation += evaluation[i][0]
+        average_evaluation += evaluation[i][1][0][0]
         
     return average_evaluation/number
         
@@ -145,18 +146,20 @@ def find_best_moves(color: pieces.Color, board_state: np.ndarray, first_move = F
         
         row = item[1]
         column = item[2]
+        #last_move = Coordinates(row,column)
+        
         starting_move = [row, column]
         
         row_move = item[3][0][0]
         row_column = item[3][0][1]
-        ending_move = [row_move, row_column]
+        #move = Move(row,column)
         
         send_attacker_to(positions, row, column, row_move, row_column)
         new_evaluation = determine_capture_values(color, positions) if first_move is False else reduced_evaluations
         
         # now we determine enemy moves
         runs += 1
-        enemy_moves = find_best_moves(pieces.opposite_color(color), positions, False, runs) if runs < 5 else []
+        enemy_moves = find_best_moves(pieces.opposite_color(color), positions, False, runs) if runs < 7 else []
         response.append([[starting_move], merge_lookahead(row_move, row_column, new_evaluation, enemy_moves)])
 
     return response
