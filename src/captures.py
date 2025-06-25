@@ -96,7 +96,6 @@ def determine_capture_values(color: pieces.Color, board_state: np.ndarray):
                 valued_captures.extend(valued_capture) 
                 
     valued_captures = [item for item in valued_captures if item]
-    check = valued_captures[0]
     valued_captures.sort(key=lambda x: x[0], reverse=True)
     
     return valued_captures
